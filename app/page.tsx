@@ -1,30 +1,15 @@
-'use client'
-
-import { useAuth } from "@/hooks/useAuth";
-import Loading from "./loading";
-
+import UploadForm from "@/components/form/UploadForm";
 
 export default function Home() {
-  const {user, isLoading, signIn, signOut} = useAuth();
-
-  if (isLoading) return (
-    <main>
-      <Loading/>
-    </main>
-  );
-
   return (
-    <main>
-      {user
-      ? <div>
-          <p>Welcome: {user.name}</p>
-          <button onClick={() => signOut()}>logout</button>
-        </div>
-      : <div>
-          <p>not authorized</p>
-          <button onClick={() => signIn()}>login</button>
-        </div>
-      }
-    </main>
+    <div
+      className="
+        flex-auto
+        bg-slate-100
+        p-2
+      "
+    >
+      <UploadForm/>
+    </div>
   );
 }
