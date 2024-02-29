@@ -10,7 +10,8 @@ export default function Skeleton({ className }: SkeletonProps) {
 
 const styles = `
 bg-[length:200%_100%]
-bg-[linear-gradient(110deg,#ededed_35%,rgb(0,0,0,0.01)_45%,rgba(0,0,0,0.03)_50%,#ededed_65%)]
-animate-[2s_shine_linear_infinite]
+bg-[#DCDCDC]
+bg-[linear-gradient(90deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.2)_15%,rgba(255,255,255,0.5)_35%,rgba(255,255,255,0)_45%)]
+animate-[1.5s_shine_linear_infinite]
 [background-position-x:180%]
 `;
