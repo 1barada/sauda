@@ -1,7 +1,17 @@
+'use client'
+
 import Skeleton from "@/components/Skeleton";
 import UploadForm from "@/components/form/UploadForm";
+import useHistory from "@/hooks/useHistory";
+import { useEffect } from "react";
 
 export default function Home() {
+  const { history } = useHistory();
+
+  useEffect(() => {
+    console.log(history)
+  }, [history])
+
   return (
     <div
       className="
