@@ -5,7 +5,7 @@ export default function Home() {
     <div
       className="
         flex-auto
-        bg-slate-100
+        bg-main
         p-2
       "
     >

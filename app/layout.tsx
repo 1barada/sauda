@@ -21,22 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <main
-            className="
-              grid
-              grid-cols-layout
-              grid-rows-layout
-              min-h-screen
-              gap-2
-            "
-          >
+          <main className="grid grid-cols-layout grid-rows-layout min-h-screen">
             <SideBar/>
-            <div
-              className="
-                flex
-                flex-col
-              "
-            >
+            <div className="flex flex-col">
               <Header/>
               {children}
             </div>

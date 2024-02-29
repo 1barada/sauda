@@ -3,15 +3,15 @@ export interface Song {
   name: string;
   duration: number;
   url: string;
-  author: string;
+  authors: string[];
   album?: string;
-  image?: string;
+  image: string;
 }
 
 export interface Album {
   id: string;
   name: string;
-  author: string;
+  authors: string[];
   songs: Song[];
-  images?: string[];
+  image: string;
 }

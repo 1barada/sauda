@@ -2,38 +2,45 @@
 
 import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form"
 
-type InputType = "button" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week";
+import { InputType } from "@/types/base";
 
 export type FormInputProps = {
   id: string;
   name: string;
-  label: string;
   type: InputType;
-  placeholder: string;
-  validation: RegisterOptions<FieldValues, string>;
+  placeholder?: string;
+  defaultValue?: string;
+  validation?: RegisterOptions<FieldValues, string>;
 };
 
 const FormInput: React.FC<FormInputProps> = ({
   id,
   name,
-  label,
   type,
   placeholder,
+  defaultValue,
   validation 
 }) => {
-  const { register } = useFormContext();
+  const { register, formState: { errors } } = useFormContext();
 
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
+    <>
       <input 
         {...register(name, validation)}
-        placeholder={placeholder}
-        type={type}
+        className={`${defaultStyle} ${errors[name] ? withErrorStyle : withoutErrorStyle}`}
         id={id}
+        type={type}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
       />
-    </div>
+    </>
   )
 }
+
+const defaultStyle = `
+flex-auto
+`;
+const withErrorStyle = ``;
+const withoutErrorStyle = ``;
 
 export default FormInput;

@@ -13,19 +13,14 @@ export default function SideBar() {
           flex-shrink-0
           flex-grow-0
           basis-10
-          bg-slate-200
+          bg-main
           text-2xl
           p-4
         "
       >
         <Link href="/">Sauda</Link>
       </h1>
-      <div
-        className="
-          flex-auto
-          bg-slate-100
-        "
-      ></div>
+      <div className="flex-auto bg-main"></div>
     </div>
   );
 }

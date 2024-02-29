@@ -9,7 +9,6 @@ export default function LogoutButton() {
     <button
       onClick={async () => {
         await signIn();
-        console.log("hello world");
       }}
     >
       login

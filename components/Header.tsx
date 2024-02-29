@@ -1,41 +1,53 @@
+'use client'
+
 import Image from "next/image";
 
-import getServerUser from "@/utils/getServerUser";
 import LogoutButton from "./LogoutButton";
 import LoginButton from "./LoginButton";
+import { useAuth } from "@/hooks/useAuth";
+import Skeleton from "./Skeleton";
 
-export default async function Header() {
-  const user = await getServerUser();
+export default function Header() {
+  const {user, isLoading} = useAuth();
 
   return (
     <header
       className="
         flex-shrink-0
         flex-grow-0
-        basis-10
+        basis-12
         flex
         items-center
         justify-between
-        bg-slate-200
-        p-2
+        bg-main
+        py-1
+        px-4
       "
     >
-      {user ? (
-        <div>
-          {user.avatarUrl && (
-            <Image
-              src={user.avatarUrl}
-              alt="avatar"
-              width={30}
-              height={30}
-              className="rounded-full"
-            />
-          )}
-          <LogoutButton />
-        </div>
-      ) : (
-        <LoginButton />
-      )}
+      <div>
+        back
+        forward
+      </div>
+      <div className="flex flex-row items-center gap-4">
+        {isLoading ? (
+          <>
+            <Skeleton className="w-16 h-5 rounded-md"/> 
+            <Skeleton className="w-9 h-9 rounded-full"/>
+          </>
+        ) : (
+          user ? (
+            <>
+              <LogoutButton />
+              {user.avatarUrl && (
+                <Image src={user.avatarUrl} alt="avatar" width={36} height={36} className="rounded-full"/>
+              )}
+            </>
+          ) : (
+            <LoginButton />
+          )
+        )}
+
+      </div>
     </header>
   );
 }
