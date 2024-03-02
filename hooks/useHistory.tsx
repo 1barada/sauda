@@ -37,6 +37,7 @@ export default function useHistory() {
     replace,
     back,
     forward,
-    refresh: router.refresh
+    refresh: router.refresh,
+    prefetch: router.prefetch
   };
 }

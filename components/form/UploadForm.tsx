@@ -3,20 +3,15 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import FormInput, { FormInputProps } from "./FormInput";
 import { useAuth } from "@/hooks/useAuth";
-
-interface UploadFormInputs {
-  title: string;
-  album: string;
-  image: File;
-  song: File;
-}
+import { upload } from "@/actions/upload";
+import { UploadFormInputs } from "@/types/upload";
 
 export default function UploadForm() {
   const methods = useForm<UploadFormInputs>();
   const {user} = useAuth();
 
   const onSubmit: SubmitHandler<UploadFormInputs> = (data) => {
-    console.log(data)
+    upload(data);
   };
   
   return (

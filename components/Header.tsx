@@ -31,8 +31,8 @@ export default function Header() {
       <div className="flex flex-row gap-4">
         <Button
           onClick={() => back()}
-          className={`bg-main-200 p-1 rounded-full text-gray-500
-            ${currentPage === 0 ? 'cursor-not-allowed' : 'cursor-auto hover:bg-main-300 hover:text-gray-800'}
+          className={`bg-main-200 p-1 rounded-full text-gray-500 cursor-auto disabled:cursor-not-allowed
+            ${currentPage === 0 ? '' : 'hover:bg-main-300 hover:text-gray-800'}
           `}
           disabled={currentPage === 0}
         >
@@ -42,8 +42,8 @@ export default function Header() {
         </Button>
         <Button
           onClick={() => forward()}
-          className={`bg-main-200 p-1 rounded-full text-gray-500
-            ${currentPage === history.length - 1 ? 'cursor-not-allowed' : 'cursor-auto hover:bg-main-300 hover:text-gray-800'}
+          className={`bg-main-200 p-1 rounded-full text-gray-500 cursor-auto disabled:cursor-not-allowed
+            ${currentPage === history.length - 1 ? '' : 'hover:bg-main-300 hover:text-gray-800'}
           `}
           disabled={currentPage === history.length - 1}
         >

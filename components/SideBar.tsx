@@ -1,11 +1,8 @@
 'use client'
 
-import useHistory from "@/hooks/useHistory";
-import Button from "./Button";
+import NavigationLink from "./NavigationLink";
 
 export default function SideBar() {
-  const { push } = useHistory();
-
   return (
     <div
       className="
@@ -28,11 +25,11 @@ export default function SideBar() {
           overflow-hidden
         "
       >
-        <Button onClick={() => push('/')}>Sauda</Button>
+        <NavigationLink href='/'>Sauda</NavigationLink>
       </h1>
       <div className="flex-auto bg-main flex flex-col gap-6">
-        <Button onClick={() => push('/dashboard')}>dashboard</Button>
-        <Button onClick={() => push('/profile')}>profile</Button>
+        <NavigationLink href='/dashboard'>dashboard</NavigationLink>
+        <NavigationLink href='/profile'>profile</NavigationLink>
       </div>
     </div>
   );
