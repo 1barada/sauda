@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      height: {
+        '100px': '100px'
+      },
+      width: {
+        '100px': '100px'
+      },
       backgroundColor: {
         'main': 'hsl(0deg 0% 97.3%)',
         'main-200': 'hsl(0deg 0% 90%)',
@@ -21,12 +27,12 @@ const config: Config = {
         'form': '240px 1fr'
       },
       gridTemplateRows: {
-        'layout': 'minmax(1fr, 100vh) 100px'
+        'layout': '1fr'
       },
       keyframes: {
         shine: {
           '100%': { 'background-position-x': '-20%' }
-        }
+        },
       }
     },
   },

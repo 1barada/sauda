@@ -4,7 +4,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import FormInput, { FormInputProps } from "./FormInput";
 import { useAuth } from "@/hooks/useAuth";
 import { upload } from "@/actions/upload";
-import { UploadFormInputs } from "@/types/upload";
+import { UploadFormInputs } from "@/types/author";
 
 export default function UploadForm() {
   const methods = useForm<UploadFormInputs>();

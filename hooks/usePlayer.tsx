@@ -1,62 +1,113 @@
-import { Song } from "@/types/audio";
-import { create } from "zustand";
+import { playerStore } from "@/store/playerStore";
+import { useEffect, useState } from "react";
 
-export interface PlayerState {
-  song?: Song;
-  songQueue: Song[];
-  pause: boolean;
-  volume: number;
-  shufle: boolean;
-  loop: 'noloop' | 'loopCurrent' | 'loopQueue';
-  setSongQueue: (songQueue: Song[], initialSongIndex?: number) => void;
-  nextSong: () => void;
-  previousSong: () => void;
-  changePauseState: () => void;
-  setVolume: (volume: number) => void;
-  changeShufle: () => void;
-  changeLoop: () => void;
-}
+export default function usePlayer() {
+  const {
+    song,
+    songQueue,
+    paused,
+    volume,
+    shuffle,
+    loop,
+    currentSongIndex,
+    nextSong,
+    previousSong,
+    changePauseState: changePauseStateStore,
+    setVolume: setVolumeStore,
+    changeShuffle,
+    changeLoop
+  } = playerStore();
+  const [audio, setAudio] = useState<HTMLAudioElement | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [time, setTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
 
-export const PlayerStore = create<PlayerState>((set, get) => ({
-  song: undefined,
-  songQueue: [],
-  pause: true,
-  volume: 1,
-  shufle: false,
-  loop: 'noloop',
-  setSongQueue: (songQueue, initialSongIndex = 0) => {
-    if (initialSongIndex < 0 || songQueue.length <= initialSongIndex)
-      throw new Error('PlayerStore.setSongQueue: passed invalid initialSongIndex value');
+  useEffect(() => {
+    if (!song) return;
 
-    set({
-      song: songQueue[initialSongIndex],
-      songQueue: songQueue,
-      pause: false
-    });
-  },
-  nextSong: () => {
-    switch(get().loop) {
-      case "noloop": 
-        
-        break;
+    function onLoad(audio: HTMLAudioElement) {
+      return () => {
+        setLoading(false);
+        setDuration(audio.duration);
+
+        if (paused) audio.pause();
+        else audio.play();
+      }
     }
-  },
-  previousSong: () => {
+    
+    function onEnd() {
+      nextSong();
+    }
 
-  },
-  changePauseState: () => {
+    setLoading(true);
+    setTime(0);
+    setDuration(0);
+    const newAudio = new Audio(song.url);
+    newAudio.loop = loop === 'loopCurrent';
+    setAudio(newAudio);
 
-  },
-  setVolume: (volume) => {
+    newAudio.addEventListener('loadeddata', onLoad(newAudio));
+    newAudio.addEventListener('ended', onEnd);
+    const timeInterval = setInterval(() => setTime(newAudio.currentTime), 1000);
 
-  },
-  changeShufle: () => {
+    return () => {
+      newAudio.removeEventListener('loadeddata', onLoad(newAudio));
+      newAudio.removeEventListener('ended', onEnd);
+      newAudio.pause();
+      setAudio(undefined);
+      clearInterval(timeInterval);
+    }
+  }, [song]);
 
-  },
-  changeLoop: () => {
+  useEffect(() => {
+    if (!audio) return;
 
+    audio.loop = loop === 'loopCurrent';
+  }, [loop]);
+
+  function changePauseState() {
+    if (!audio) return;
+    
+    if (paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+
+    changePauseStateStore();
   }
-})); 
 
-export function usePlayer() {
+  function setVolume(volume: number) {
+    if (!audio) return;
+
+    audio.volume = volume;
+    setVolumeStore(volume);
+  }
+
+  function setCurrentTime(time: number) {
+    if (!audio) return;
+
+    audio.currentTime = time;
+    setTime(time);
+  }
+
+  return {
+    loading,
+    song,
+    songQueue,
+    paused,
+    volume,
+    shuffle,
+    loop,
+    time,
+    duration,
+    currentSongIndex,
+    nextSong,
+    previousSong,
+    changePauseState,
+    setVolume,
+    changeShuffle,
+    changeLoop,
+    setCurrentTime
+  };
 }
