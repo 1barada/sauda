@@ -1,6 +1,8 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import { Toaster } from "react-hot-toast";
+
 import { AuthProvider } from "@/hooks/useAuth";
 import Header from "@/components/Header";
 import SideBar from "@/components/SideBar";
@@ -32,6 +34,7 @@ export default function RootLayout({
             </div>
             <Player className="h-100px"/>
           </main>
+          <Toaster position="top-right"/>
         </AuthProvider>
       </body>
     </html>

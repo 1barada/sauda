@@ -1,17 +1,17 @@
 export interface Song {
   id: string;
-  name: string;
+  title: string;
   duration: number;
   url: string;
-  authors: string[];
+  coverUrl: string;
+  authors: string;
   album?: string;
-  image: string;
 }
 
 export interface Album {
   id: string;
-  name: string;
-  authors: string[];
-  songs: Song[];
-  image: string;
+  title: string;
+  authors: string;
+  songUrls: Song[];
+  coverUrl: string;
 }

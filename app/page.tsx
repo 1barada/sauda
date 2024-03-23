@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import UploadForm from "@/components/form/UploadForm";
 import usePlayerQueue from "@/hooks/usePlayerQueue";
 import { Song } from "@/types/audio";
+import { BASE_URL } from "@/utils/constants";
 
 export default function Home() {
   const setPlayerQueue = usePlayerQueue();
@@ -22,29 +23,29 @@ export default function Home() {
       <Button 
         onClick={() => setPlayerQueue([{
           id: '24kljsdhdgflksdhjfssjdhfkshf',
-          name: 'some song 1',
+          title: 'some song 1',
           url: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/songs/13%20Mountain%20Temple%20(Polyester%20Jammy).mp3',
           duration: 100,
-          authors: ['me', 'grecha'],
-          image: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/covers/pop-rock-album-cover-template.png',
+          authors: 'me & grecha',
+          coverUrl: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/covers/pop-rock-album-cover-template.png',
           album: 'asdfasf'
         }, {
           id: '24kljeessssdhdgflksdhjfsjdhfkshf',
-          name: 'some song 2',
+          title: 'some song 2',
           url: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/songs/1.%20Evenflow.mp3',
           duration: 100,
-          authors: ['me', 'grecha'],
-          image: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/covers/pop-rock-album-cover-template.png',
+          authors: 'me & grecha',
+          coverUrl: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/covers/pop-rock-album-cover-template.png',
           album: 'asdfasf'
         }, {
           id: '24kljssssdhaadgflksdhjfsjdhfkshf',
-          name: 'some song 3',
+          title: 'some song 3',
           url: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/songs/Jean_Dawson_Mac_DeMarco_-_MENTHOL_(patefon.org).mp3',
           duration: 100,
-          authors: ['me', 'grecha'],
-          image: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/covers/pop-rock-album-cover-template.png',
+          authors: 'me & grecha',
+          coverUrl: 'https://fnssesasapykevrjjntl.supabase.co/storage/v1/object/public/covers/pop-rock-album-cover-template.png',
           album: 'asdfasf'
-        }] as Song[])}
+        }])}
       >
         load song
       </Button>

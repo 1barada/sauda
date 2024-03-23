@@ -11,29 +11,30 @@ export type FormInputProps = {
   placeholder?: string;
   defaultValue?: string;
   validation?: RegisterOptions<FieldValues, string>;
+  accept?: string;
 };
 
-const FormInput: React.FC<FormInputProps> = ({
+function FormInput({
   id,
   name,
   type,
   placeholder,
   defaultValue,
-  validation 
-}) => {
+  validation,
+  accept
+}: FormInputProps) {
   const { register, formState: { errors } } = useFormContext();
 
   return (
-    <>
-      <input 
-        {...register(name, validation)}
-        className={`${defaultStyle} ${errors[name] ? withErrorStyle : withoutErrorStyle}`}
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-      />
-    </>
+    <input 
+      {...register(name, validation)}
+      className={`${defaultStyle} ${errors[name] ? withErrorStyle : withoutErrorStyle}`}
+      id={id}
+      type={type}
+      placeholder={placeholder}
+      defaultValue={defaultValue}
+      accept={accept}
+    />
   )
 }
 

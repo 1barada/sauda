@@ -44,11 +44,11 @@ export default function Player({ className }: { className?: string; }) {
       ) : (
         <div className="flex flex-row gap-4">
           <div>
-            <Image src={song?.image || ''} alt='cover' width={100} height={100}/>
+            <Image src={song.coverUrl || ''} alt='cover' width={100} height={100}/>
           </div>
           <div className="flex flex-col justify-center">
-            <p className="text-xl text-gray-900">{song.name}</p>
-            <p className="text-sm text-gray-400">{song.authors.join(' & ')}</p>
+            <p className="text-xl text-gray-900">{song.title}</p>
+            <p className="text-sm text-gray-400">{song.authors}</p>
           </div>
         </div>
       )}
