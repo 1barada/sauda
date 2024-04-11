@@ -2,16 +2,12 @@ import { cookies } from "next/headers";
 import NodeID3 from 'node-id3';
 import getSongDuration from "get-mp3-duration";
 
-import { withAuthentication } from "@/middlewares";
+import { songUploadValidation, withAuthentication } from "@/middlewares";
 import { MiddlewareFunction, handler } from "@/middlewares/handler";
-import { HttpException, RequestUploadWithSongData } from "@/types/base";
+import { RequestUploadWithSongData } from "@/types/base";
 import { createClient } from "@/utils/supabase/server";
 import { randomUUID } from "crypto";
-import { uploadSongSchema } from "./dtos";
-import { isFile } from "@/utils/isFile";
-import { z } from "zod";
 import { HttpStatus } from "@/types/httpStatusEnum";
-import { formatZodError } from "@/utils/formatZodError";
 
 const upload: MiddlewareFunction<RequestUploadWithSongData, null> = async (req) => {
   if (!req.user) throw new Error('withAuthentication middleware not provided');
@@ -73,52 +69,6 @@ const upload: MiddlewareFunction<RequestUploadWithSongData, null> = async (req) 
     data: null,
     status: HttpStatus.CREATED
   };
-}
-
-const songUploadValidation: MiddlewareFunction<RequestUploadWithSongData> = async (req, next) => {
-  if (!req.user) throw new Error('withAuthentication middleware not provided');
-
-  const formData = await req.formData();
-  const formDataObj: {[key: string]: any} = {};
-  formData.forEach((value, key) => {
-    formDataObj[key] = value;
-  });
-
-  let { song: songFormData, cover: coverFormData, ...formDataObjFields } = formDataObj;
-  if (!isFile(songFormData) || !isFile(coverFormData)) throw new HttpException('song and cover are required', 400);
-
-  const song = songFormData as File;
-  const cover = coverFormData as File;
-
-  const songObj = {
-    type: song.type,
-    size: song.size
-  }
-
-  const coverObj = {
-    type: cover.type,
-    size: cover.size
-  }
-
-  let result;
-  try {
-    result = uploadSongSchema.parse({ ...formDataObj, song: songObj, cover: coverObj });
-  } catch (error) {
-    if (error instanceof z.ZodError) throw new HttpException(formatZodError(error));
-    throw new Error('unable to validate upload song data');
-  }
-
-  const authors = result.subAuthors ? [req.user.name, ...result.subAuthors.split('&').map(author => author.trim())].join(' & ') : req.user.name;
-
-  req.songData = {
-    title: result.title,
-    song,
-    cover,
-    album: result.album,
-    authors: authors,
-  };
-
-  return next();
 }
 
 export const POST = handler<RequestUploadWithSongData, null>(
