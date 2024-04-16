@@ -11,7 +11,7 @@ export const uploadSongSchema = z.object({
     type: z.enum(['image/jpeg', 'image/png']),
     size: z.number().max(MAX_COVER_SIZE)
   }),
-  album: z.string().optional(),
+  albumId: z.string().uuid().optional(),
   subAuthors: z.string().min(1).max(MAX_AUTHORS_SIZE).optional(),
   releaseDate: z.coerce.date().max(new Date(), 'release date must be before now')
 });
@@ -20,7 +20,7 @@ export interface UploadSongDto {
   title: string;
   song: File;
   cover: File;
-  album?: string;
+  albumId?: string;
   authors: string;
   releaseDate: Date;
 }
@@ -32,7 +32,7 @@ export const updateSongSchema = z.object({
     type: z.enum(['image/jpeg', 'image/png']),
     size: z.number().max(MAX_COVER_SIZE)
   }).optional(),
-  album: z.string().optional(),
+  albumId: z.string().uuid().optional(),
   subAuthors: z.string().min(1).max(MAX_AUTHORS_SIZE).optional(),
 });
 
@@ -44,6 +44,16 @@ export type UpdateSongDto = {
     file: File;
     path: string;
   };
-  album: string;
+  albumId: string;
   authors: string;
 }>
+
+export const deleteSongSchema = z.object({
+  id: z.string().uuid()
+});
+
+export type DeleteSongDto = { 
+  id: string; 
+  coverUrl: string;
+  songUrl: string;
+}

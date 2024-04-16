@@ -3,11 +3,12 @@ import getSongDuration from "get-mp3-duration";
 import NodeID3 from 'node-id3';
 import { randomUUID } from "crypto";
 
-import { songUpdateValidation, songUploadValidation, withAuthentication } from "@/middlewares";
+import { withAuthentication } from "@/middlewares";
 import { MiddlewareFunction, handler } from "@/middlewares/handler";
-import { RequestUpdateSongData, RequestUploadSongData } from "@/types/base";
+import { RequestDeleteSongData, RequestUpdateSongData, RequestUploadSongData } from "@/types/base";
 import { HttpStatus } from "@/types/httpStatusEnum";
 import { createClient } from "@/utils/supabase/server";
+import { songUploadValidation, songUpdateValidation, songDeleteValidation } from "./middlewares";
 
 const upload: MiddlewareFunction<RequestUploadSongData, null> = async (req) => {
   if (!req.user) throw new Error('withAuthentication middleware not provided');
@@ -50,14 +51,14 @@ const upload: MiddlewareFunction<RequestUploadSongData, null> = async (req) => {
   
   const songUploadData = songUploadResponse.data;
   const coverUploadData = coverUploadResponse.data;
-  const { title, authors, album } = songData;
+  const { title, authors, albumId } = songData;
   const duration = Math.floor(getSongDuration(songBuffer) / 1000); 
   const releaseDate = `${songData.releaseDate.getUTCFullYear()}-${songData.releaseDate.getUTCMonth() + 1}-${songData.releaseDate.getUTCDate()}`
   
   const { error } = await supabase.from('songs').insert({
     title,
     authors,
-    album,
+    albumId: albumId ? albumId : null,
     songUrl: songUploadData.path,
     coverUrl: coverUploadData.path,
     authorId: req.user.id,
@@ -78,6 +79,7 @@ const upload: MiddlewareFunction<RequestUploadSongData, null> = async (req) => {
       if (removeCoverError) console.error(message, removeCoverError.message);
     });
 
+    console.error(error);
     return {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       data: null,
@@ -118,7 +120,7 @@ const update: MiddlewareFunction<RequestUpdateSongData, null> = async (req) => {
 
   const { error } = await supabase.from('songs').update({
     title: songData.title,
-    album: songData.album,
+    albumId: songData.albumId ? songData.albumId : null,
     authors: songData.authors
   }).eq('id', songData.id);
 
@@ -131,6 +133,34 @@ const update: MiddlewareFunction<RequestUpdateSongData, null> = async (req) => {
   };
 }
 
+const deleteSong: MiddlewareFunction<RequestDeleteSongData, null> = async (req) => {
+  if (!req.user) throw new Error('withAuthentication middleware not provided');
+  if (!req.songData) throw new Error('songDeleteValidation middleware not provided');
+
+  const supabase = createClient(cookies());
+  const songData = req.songData;
+
+  const deleteCoverPromise = supabase.storage.from('covers').remove([songData.coverUrl]);
+  const deleteSongPromise = supabase.storage.from('songs').remove([songData.songUrl]);
+  const deleteSongInstancePromise = supabase.from('songs').delete().eq('id', songData.id);
+
+  const [ deleteCoverResponse, deleteSongResponse, deleteSongInstanceResponse ] = await Promise.all([
+    deleteCoverPromise, 
+    deleteSongPromise, 
+    deleteSongInstancePromise
+  ]);
+
+  if (deleteCoverResponse.error) throw new Error('unable to delete cover. ' + deleteCoverResponse.error);
+  if (deleteSongResponse.error) throw new Error('unable to delete song. ' + deleteSongResponse.error);
+  if (deleteSongInstanceResponse.error) throw new Error('unable to delete song instance. ' + deleteSongInstanceResponse.error);
+
+  return {
+    status: HttpStatus.OK,
+    data: null,
+    error: null
+  }
+}
+
 export const POST = handler<RequestUploadSongData, null>(
   withAuthentication,
   songUploadValidation,
@@ -141,4 +171,10 @@ export const PATCH = handler<RequestUpdateSongData, null>(
   withAuthentication,
   songUpdateValidation,
   update
+);
+
+export const DELETE = handler<RequestDeleteSongData, null>(
+  withAuthentication,
+  songDeleteValidation,
+  deleteSong
 );

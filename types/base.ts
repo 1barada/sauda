@@ -1,7 +1,8 @@
 import { NextRequest } from "next/server";
 import { UserInfo } from "./user";
-import { UpdateSongDto, UploadSongDto } from "@/app/api/author/dtos";
+import { DeleteSongDto, UpdateSongDto, UploadSongDto } from "@/app/api/author/dtos";
 import { HttpStatus } from "./httpStatusEnum";
+import { UploadAlbumDto, UpdateAlbumDto, DeleteAlbumDto } from "@/app/api/author/albums/dtos";
 
 export type InputType = "button" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week";
 
@@ -27,4 +28,20 @@ export interface RequestUploadSongData extends RequestWithAuthorization {
 
 export interface RequestUpdateSongData extends RequestWithAuthorization {
   songData: UpdateSongDto;
+}
+
+export interface RequestDeleteSongData extends RequestWithAuthorization {
+  songData: DeleteSongDto;
+}
+
+export interface RequestUploadAlbumData extends RequestWithAuthorization {
+  albumData: UploadAlbumDto;
+}
+
+export interface RequestUpdateAlbumData extends RequestWithAuthorization {
+  albumData: UpdateAlbumDto;
+}
+
+export interface RequestDeleteAlbumData extends RequestWithAuthorization {
+  albumData: DeleteAlbumDto;
 }

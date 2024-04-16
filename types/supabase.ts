@@ -9,10 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      albums: {
+        Row: {
+          authorId: string
+          authors: string
+          coverUrl: string
+          id: string
+          releaseDate: string
+          title: string
+        }
+        Insert: {
+          authorId?: string
+          authors: string
+          coverUrl: string
+          id?: string
+          releaseDate: string
+          title: string
+        }
+        Update: {
+          authorId?: string
+          authors?: string
+          coverUrl?: string
+          id?: string
+          releaseDate?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_albums_authorId_fkey"
+            columns: ["authorId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       songs: {
         Row: {
-          album: string | null
-          authorId: string | null
+          albumId: string | null
+          authorId: string
           authors: string
           coverUrl: string
           duration: number
@@ -22,8 +57,8 @@ export type Database = {
           title: string
         }
         Insert: {
-          album?: string | null
-          authorId?: string | null
+          albumId?: string | null
+          authorId: string
           authors: string
           coverUrl: string
           duration: number
@@ -33,8 +68,8 @@ export type Database = {
           title: string
         }
         Update: {
-          album?: string | null
-          authorId?: string | null
+          albumId?: string | null
+          authorId?: string
           authors?: string
           coverUrl?: string
           duration?: number
@@ -44,6 +79,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "public_songs_albumId_fkey"
+            columns: ["albumId"]
+            isOneToOne: false
+            referencedRelation: "albums"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_songs_authorId_fkey"
             columns: ["authorId"]
