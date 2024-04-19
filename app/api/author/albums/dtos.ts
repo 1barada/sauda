@@ -1,6 +1,8 @@
+import { RequestWithAuthorization } from "@/types/base";
 import { MAX_AUTHORS_SIZE, MAX_COVER_SIZE, MAX_TITLE_SIZE } from "@/utils/constants";
 import { z } from "zod";
 
+//#region Update
 export const updateAlbumSchema = z.object({
   id: z.string().uuid(),
   title: z.string().min(1).max(MAX_TITLE_SIZE).optional(),
@@ -22,6 +24,12 @@ export type UpdateAlbumDto = {
   authors: string;
 }>
 
+export interface RequestUpdateAlbumData extends RequestWithAuthorization {
+  albumData: UpdateAlbumDto;
+}
+//#endregion
+
+//#region Upload
 export const uploadAlbumSchema = z.object({
   title: z.string().min(1).max(MAX_TITLE_SIZE),
   cover: z.object({
@@ -39,6 +47,12 @@ export type UploadAlbumDto = {
   releaseDate: Date;
 }
 
+export interface RequestUploadAlbumData extends RequestWithAuthorization {
+  albumData: UploadAlbumDto;
+}
+//#endregion
+
+//#region Delete
 export const deleteAlbumSchema = z.object({
   id: z.string().uuid()
 });
@@ -47,3 +61,8 @@ export type DeleteAlbumDto = {
   id: string; 
   coverUrl: string;
 }
+
+export interface RequestDeleteAlbumData extends RequestWithAuthorization {
+  albumData: DeleteAlbumDto;
+}
+//#endregion

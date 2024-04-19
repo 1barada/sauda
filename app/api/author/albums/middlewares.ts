@@ -1,12 +1,11 @@
 import { MiddlewareFunction } from "@/middlewares/handler";
-import { RequestDeleteAlbumData, RequestUpdateAlbumData, RequestUploadAlbumData } from "@/types/base";
 import { HttpStatus } from "@/types/httpStatusEnum";
 import { formatZodError } from "@/utils/formatZodError";
 import { isFile } from "@/utils/isFile";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { deleteAlbumSchema, updateAlbumSchema, uploadAlbumSchema } from "./dtos";
+import { RequestDeleteAlbumData, RequestUpdateAlbumData, RequestUploadAlbumData, deleteAlbumSchema, updateAlbumSchema, uploadAlbumSchema } from "./dtos";
 
 export const albumUpdateValidation: MiddlewareFunction<RequestUpdateAlbumData> = async (req, next) => {
   if (!req.user) throw new Error('withAuthentication middleware not provided');

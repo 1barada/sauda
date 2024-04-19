@@ -18,30 +18,10 @@ export type ApiResponse<T> = {
   };
 });
 
-export interface RequestWithAuthorization extends NextRequest {
+export interface BaseRequest extends NextRequest {
+  query: URLSearchParams;
+}
+
+export interface RequestWithAuthorization extends BaseRequest {
   user: UserInfo;
-}
-
-export interface RequestUploadSongData extends RequestWithAuthorization {
-  songData: UploadSongDto;
-}
-
-export interface RequestUpdateSongData extends RequestWithAuthorization {
-  songData: UpdateSongDto;
-}
-
-export interface RequestDeleteSongData extends RequestWithAuthorization {
-  songData: DeleteSongDto;
-}
-
-export interface RequestUploadAlbumData extends RequestWithAuthorization {
-  albumData: UploadAlbumDto;
-}
-
-export interface RequestUpdateAlbumData extends RequestWithAuthorization {
-  albumData: UpdateAlbumDto;
-}
-
-export interface RequestDeleteAlbumData extends RequestWithAuthorization {
-  albumData: DeleteAlbumDto;
 }

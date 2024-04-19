@@ -6,7 +6,7 @@ import { UserInfo } from "@/types/user";
 
 export default async function getServerUser(): Promise<UserInfo | undefined> {
   const supabase = createClient(cookies());
-  const {data: {user}} = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) return undefined;
 

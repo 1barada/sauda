@@ -1,13 +1,14 @@
-import { ApiResponse } from "@/types/base";
+import { ApiResponse, BaseRequest } from "@/types/base";
 import { HttpStatus } from "@/types/httpStatusEnum";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export type MiddlewareFunction<RequestType extends NextRequest, ResponseType = any> = (req: RequestType, next: () => void) => Promise<ApiResponse<ResponseType | null> | void>;
+export type MiddlewareFunction<RequestType extends BaseRequest = BaseRequest, ResponseType = any> = (req: RequestType, next: () => void) => Promise<ApiResponse<ResponseType | null> | void>;
 
-export function handler<RequestType extends NextRequest, ResponseType = any>(
+export function handler<RequestType extends BaseRequest = BaseRequest, ResponseType = any>(
   ...middlewares: MiddlewareFunction<RequestType, ResponseType>[]
 ) {
-  return async (req: RequestType): Promise<NextResponse<ApiResponse<ResponseType | null>>> => {
+  return async (req: RequestType, { params }: { params: { [key: string]: string } }): Promise<NextResponse<ApiResponse<ResponseType | null>>> => {
+    req.query = new URLSearchParams(params);
     try {
       let result: ApiResponse<ResponseType | null> | void = undefined;
 

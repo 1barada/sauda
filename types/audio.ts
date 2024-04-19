@@ -5,13 +5,17 @@ export interface Song {
   url: string;
   coverUrl: string;
   authors: string;
-  album?: string;
+  authorId: string;
+  releaseDate: Date;
+  album?: Omit<Album, 'songUrls'>;
 }
 
 export interface Album {
   id: string;
   title: string;
   authors: string;
-  songUrls: Song[];
+  authorId: string;
+  songUrls: Omit<Song, 'album'>[];
   coverUrl: string;
+  releaseDate: Date;
 }

@@ -1,12 +1,12 @@
 import { withAuthentication } from "@/middlewares";
 import { MiddlewareFunction, handler } from "@/middlewares/handler";
-import { RequestUploadAlbumData, RequestUpdateAlbumData, RequestDeleteAlbumData } from "@/types/base";
 import { albumUploadValidation, albumUpdateValidation, albumDeleteValidation } from "./middlewares";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { randomUUID } from "crypto";
 import NodeID3 from "node-id3";
 import { HttpStatus } from "@/types/httpStatusEnum";
+import { RequestUploadAlbumData, RequestUpdateAlbumData, RequestDeleteAlbumData } from "./dtos";
 
 const upload: MiddlewareFunction<RequestUploadAlbumData, null> = async (req) => {
   if (!req.user) throw new Error('withAuthentication middleware not provided');

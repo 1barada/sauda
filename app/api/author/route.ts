@@ -5,10 +5,10 @@ import { randomUUID } from "crypto";
 
 import { withAuthentication } from "@/middlewares";
 import { MiddlewareFunction, handler } from "@/middlewares/handler";
-import { RequestDeleteSongData, RequestUpdateSongData, RequestUploadSongData } from "@/types/base";
 import { HttpStatus } from "@/types/httpStatusEnum";
 import { createClient } from "@/utils/supabase/server";
 import { songUploadValidation, songUpdateValidation, songDeleteValidation } from "./middlewares";
+import { RequestDeleteSongData, RequestUpdateSongData, RequestUploadSongData } from "./dtos";
 
 const upload: MiddlewareFunction<RequestUploadSongData, null> = async (req) => {
   if (!req.user) throw new Error('withAuthentication middleware not provided');

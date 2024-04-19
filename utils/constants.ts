@@ -5,3 +5,5 @@ export const MAX_SONG_SIZE = 20971520; // 20 mb
 export const MAX_COVER_SIZE = 5242880; // 5 mb
 export const MAX_TITLE_SIZE = 20;
 export const MAX_AUTHORS_SIZE = 40;
+
+export const PAGE_LIMIT = 20;

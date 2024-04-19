@@ -1,11 +1,10 @@
 import { MiddlewareFunction } from "@/middlewares/handler";
-import { RequestDeleteSongData, RequestUpdateSongData, RequestUploadSongData } from "@/types/base";
 import { HttpStatus } from "@/types/httpStatusEnum";
 import { formatZodError } from "@/utils/formatZodError";
 import { isFile } from "@/utils/isFile";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { deleteSongSchema, updateSongSchema, uploadSongSchema } from "./dtos";
+import { RequestDeleteSongData, RequestUpdateSongData, RequestUploadSongData, deleteSongSchema, updateSongSchema, uploadSongSchema } from "./dtos";
 import { createClient } from "@/utils/supabase/server";
 
 export const songUpdateValidation: MiddlewareFunction<RequestUpdateSongData> = async (req, next) => {
