@@ -7,7 +7,7 @@ export interface Song {
   authors: string;
   authorId: string;
   releaseDate: Date;
-  album?: Omit<Album, 'songUrls'>;
+  album?: Omit<Album, 'songs'>;
 }
 
 export interface Album {
@@ -15,7 +15,7 @@ export interface Album {
   title: string;
   authors: string;
   authorId: string;
-  songUrls: Omit<Song, 'album'>[];
+  songs: Omit<Song, 'album'>[];
   coverUrl: string;
   releaseDate: Date;
 }

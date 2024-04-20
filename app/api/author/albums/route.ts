@@ -47,7 +47,7 @@ const upload: MiddlewareFunction<RequestUploadAlbumData, null> = async (req) => 
   // if error delete all uploaded data
   if (error) {
     // we are not waiting for promises to finish so client can get response sooner
-    const removeCoverPromise = supabase.storage
+    supabase.storage
       .from('covers')
       .remove([coverUploadData.path])
       .then(({ error }) => {
