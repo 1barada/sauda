@@ -6,9 +6,9 @@ import { createClient } from "@/utils/supabase/client";
 import { UserInfo } from "@/types/user";
 
 interface AuthContextType {
-  user?: UserInfo;
+  user: UserInfo | null;
   isLoading: boolean;
-  error?: Error ;
+  error: Error | null;
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -16,9 +16,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserInfo | undefined>(undefined);
+  const [user, setUser] = useState<UserInfo | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | undefined>(undefined);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           setUser(userInfo);
         } else {
-          setUser(undefined);
+          setUser(null);
         }
 
         if (event === "INITIAL_SESSION") setIsLoading(false);
@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
 
     const supabase = createClient();
-    const {error} = await supabase.auth.signInWithOAuth({ provider: "google" });
+    const { error } = await supabase.auth.signInWithOAuth({ provider: "google" });
 
     if (error) setError(error);
     
@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
 
     const supabase = createClient();
-    const {error} = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
 
     if (error) setError(error);
 
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
 
-  if (!context) {
+  if (context === null) {
     throw new Error("useAuth must me used within a AuthProvider");
   }
 
