@@ -2,7 +2,7 @@ import NavigationLink from "@/components/NavigationLink";
 
 // UI for not founded pages
 //
-// not using '/not-found.tsx' because it redirects the page instead of rendering it
+// not using '/not-found.tsx' because it's redirects a page instead of rendering it
 export default function NotFound() {
   return (
     <div className='bg-main flex-auto flex flex-col items-center justify-center gap-5'>
